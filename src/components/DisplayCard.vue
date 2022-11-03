@@ -3,7 +3,6 @@ import Card from "./Card.vue";
 import axios from "axios";
 import { ref, reactive } from "vue";
 
-const title = ref("Yu-Gi-Oh Deck Creator");
 const data = reactive({
   heading: "Ghost Sister & Spooky Dogwood",
   atk: 100,

@@ -4,13 +4,14 @@ import { ref } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 
 const displayCardToggle = ref<boolean>(true);
+function clickMe(n: string): void {
+  console.log(n);
+}
 </script>
 
 <template>
   <div class="container">
-    <section>
-      <SearchBar />
-    </section>
+    <section><SearchBar @some-click-event="(n) => clickMe(n)" /></section>
 
     <DisplayCard id="display" />
 
@@ -63,7 +64,7 @@ const displayCardToggle = ref<boolean>(true);
   // Grid shortcut
   // grid: grid-template-rows: ;/ grid-template-columns: ; insert grid areas as below.
   grid:
-    " search search search" 1fr
+    " . search ." 1fr
     "card card card" 600px
     ". button ." 1fr / 0.5fr 3fr 0.5fr;
   background: #ffffff;
