@@ -2,18 +2,53 @@
 import DisplayCard from "../components/DisplayCard.vue";
 import { ref } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
+import axios from "axios";
 
-const displayCardToggle = ref<boolean>(true);
-function clickMe(n: string): void {
-  console.log(n);
+const data = ref({
+  name: "",
+  atk: 0,
+  def: 0,
+  level: 1,
+  desc: ".....",
+});
+// const { name } = data.value;
+// if we destructure as above we lose the reactivity
+
+// const data2 = {
+//   name: ref("ddd"),
+// };
+// // lets try pulling the vals from data2
+// let { name } = data2;
+// // we can pull data from an object with refs when the values are refs.
+
+async function search(n: string): Promise<void> {
+  try {
+    console.log(n);
+    let res = await axios.get(
+      `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${n}`
+    );
+    console.log(res);
+    data.value = res.data.data[0];
+
+    console.log(data.value.atk);
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
 <template>
   <div class="container">
-    <section><SearchBar @some-click-event="(n) => clickMe(n)" /></section>
-
-    <DisplayCard id="display" />
+    <SearchBar id="searchComp" @search-event="(n) => search(n)" />
+    <!-- no need to write .value because of top-level ref unwrapping in templates -->
+    <DisplayCard
+      id="display"
+      :name="data.name"
+      :atk="data.atk"
+      :def="data.def"
+      :level="data.level"
+      :desc="data.desc"
+    />
 
     <button>Save To Deck Collection</button>
   </div>
@@ -26,10 +61,11 @@ function clickMe(n: string): void {
 <style scoped lang="scss">
 .container {
   display: grid;
-
-  // grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  grid: 1fr 5fr 1fr / 2fr 5fr 2fr;
+  // background: #353535;
   // fr being a fraction of the free space in the grid.
-  // grid-template-rows: repeat(3, 300px);
+
   // grid-template-areas:
   //   ". search ."
   //   ". card ."
@@ -38,7 +74,6 @@ function clickMe(n: string): void {
   // column-gap: 10px;
   // row-gap: 20px;
   // same as:
-  gap: 30px 20px;
 
   // aligns items in center of their cell along the row axis
   // justify-items: center; --> taken care of by place-items: center;
@@ -63,35 +98,41 @@ function clickMe(n: string): void {
 
   // Grid shortcut
   // grid: grid-template-rows: ;/ grid-template-columns: ; insert grid areas as below.
-  grid:
-    " . search ." 1fr
-    "card card card" 600px
-    ". button ." 1fr / 0.5fr 3fr 0.5fr;
-  background: #ffffff;
 }
 
-section {
-  grid-area: search;
-  align-self: start;
-  background: #1f3657;
+#searchComp {
+  grid-column: 1 /4;
+  grid-row: 1/2;
+  display: grid;
+
+  grid: 1fr 1fr/1fr;
 }
 #display {
   background: #b47a57;
-  grid-area: card;
+
   border: #1f3657 solid 10px;
   border-radius: 5px;
+  grid-column: 2 /3;
+  grid-row: 2/3;
 }
 button {
   background: rgb(0, 0, 0);
   color: white;
-  grid-area: button;
-  padding: 10px;
-  border-radius: 3px;
-  cursor: pointer;
+  border-radius: 5px;
   transition: 0.3s ease-in-out;
 
   &:hover {
-    background: rgb(19, 18, 18);
+    background: #cc5a7194;
   }
+  grid-column: 1 /4;
+  grid-row: 3/4;
+  width: 60%;
+  height: 60%;
+  justify-self: center;
+  color: white;
+  background: #cc5a71;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+  font-weight: bold;
 }
 </style>

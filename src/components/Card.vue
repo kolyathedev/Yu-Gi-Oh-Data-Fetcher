@@ -1,10 +1,10 @@
 <script setup lang="ts">
 export interface Props {
   title: string;
-  stats?: number[];
-  level: number;
+  stats?: (number | undefined)[];
+  level?: number;
   img?: string;
-  desc: string;
+  desc?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,10 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
       alt="Ghost Sister and Spooky Dogwood"
     />
     <p class="description">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-      provident, delectus accusantium totam veritatis possimus. Iure mollitia
-      vitae corrupti odio delectus qui ex aut cumque. Dicta aperiam veritatis
-      recusandae id.
+      {{ desc }}
     </p>
     <div class="stats">
       <p>{{ stats[0] }}</p>
@@ -39,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
 <style scoped lang="scss">
 .container1 {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 100%;
   grid-template-rows: 50px 100px 200px auto 50px;
   grid-template-areas:
     "title"
@@ -49,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
     "stats";
 
   color: black;
+  justify-content: center;
 }
 
 h3 {

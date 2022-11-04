@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import NavArea from "./components/NavArea.vue";
 import { ref } from "vue";
-const deckName = ref("Shadow Deck");
+const deckName = ref();
+const sizeIcons = ref("3x");
 </script>
 
 <template>
   <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <NavArea :deckName="deckName" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <h3 v-if="deckName">{{ deckName }}</h3>
+    <nav>
+      <RouterLink class="link" to="/">
+        <font-awesome-icon icon="fa-solid fa-magnifying-glass" size="3x" />
+      </RouterLink>
+      <RouterLink class="link" to="/deckView"
+        ><font-awesome-icon icon="fa-solid fa-box-archive" size="3x" />
+      </RouterLink>
+      <RouterLink class="link" to="/about"
+        ><font-awesome-icon icon="fa-solid fa-circle-question" size="3x"
+      /></RouterLink>
+    </nav>
   </header>
 
   <RouterView />
@@ -32,62 +28,26 @@ const deckName = ref("Shadow Deck");
 header {
   line-height: 1.5;
   max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+  display: grid;
+  grid: 1fr 3fr 1fr / 1fr 3fr 1fr;
 }
 
 nav {
-  width: 100%;
+  min-width: 100%;
+  height: auto;
   font-size: 12px;
   text-align: center;
   margin-top: 2rem;
+
+  grid-row-start: 2;
+  grid-column-start: 2;
+  display: grid;
+  grid: repeat(3, 1fr) / repeat(3, 1fr);
+  border-radius: 5px;
+  border: #454647 solid 5px;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.link {
+  place-self: center;
 }
 </style>
